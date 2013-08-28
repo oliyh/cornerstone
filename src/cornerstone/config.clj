@@ -23,6 +23,10 @@
        env))
    {} env-vars))
 
+(def config
+  (fn ([] @config-atom)
+    ([& args] (apply @config-atom args))))
+
 (defn bootstrap
   "Loads config from file and overrides from system env
    Provide args with :name, :env, :env-prefix and :config-dir"
@@ -30,8 +34,5 @@
      {name "dev" config-dir "resources/config/" env-prefix nil env (System/getenv)}}]
      (let [file-cfg (read-config-file config-dir name)
            env-cfg (read-env-vars (set (keys file-cfg)) env-prefix env)]
-       (reset! config-atom (merge {:name name} file-cfg env-cfg)))))
-
-(def config
-  (fn ([] @config-atom)
-    ([& args] (apply @config-atom args))))
+       (reset! config-atom (merge {:name name} file-cfg env-cfg))
+       config)))
