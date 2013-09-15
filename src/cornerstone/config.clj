@@ -21,7 +21,8 @@
                        :else nil)]
        (try
          (assoc env env-key (if (symbol? (edn/read-string v)) v (edn/read-string v)))
-         (catch Exception e (println "Could not read value for" env-key ":" v)))
+         (catch Exception e
+           (assoc env env-key v)))
        env))
    {} env-vars))
 

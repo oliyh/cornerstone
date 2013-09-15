@@ -32,8 +32,9 @@
       (is (= "baz" (config :foo)))
       (is (= false (config :mytest-toggle))))))
 
-(deftest ignores-values-that-edn-does-not-like
+(deftest can-still-read-vars-that-edn-does-not-like
   (let [config (bootstrap {:name "dev"
-                           :env {"foo" "@abc"}})]
-    (testing "the value for foo is nil"
-      (is (= nil (config :foo))))))
+                           :env-prefix "mytest-"
+                           :env {"mytest-foo" "bqy@abc"}})]
+    (testing "the value for foo is the correct string"
+      (is (= "bqy@abc" (config :foo))))))
