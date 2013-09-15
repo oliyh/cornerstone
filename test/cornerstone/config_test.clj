@@ -31,3 +31,9 @@
     (testing "config in the env overrides what is in the file if they have the same name"
       (is (= "baz" (config :foo)))
       (is (= false (config :mytest-toggle))))))
+
+(deftest ignores-values-that-edn-does-not-like
+  (let [config (bootstrap {:name "dev"
+                           :env {"foo" "@abc"}})]
+    (testing "the value for foo is nil"
+      (is (= nil (config :foo))))))

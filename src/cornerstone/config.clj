@@ -19,7 +19,9 @@
                        (and env-prefix (.startsWith k env-prefix)) (keyword (string/replace-first k env-prefix ""))
                        (contains? overridable (keyword k)) (keyword k)
                        :else nil)]
-       (assoc env env-key (if (symbol? (edn/read-string v)) v (edn/read-string v)))
+       (try
+         (assoc env env-key (if (symbol? (edn/read-string v)) v (edn/read-string v)))
+         (catch Exception e (println "Could not read value for" env-key ":" v)))
        env))
    {} env-vars))
 
